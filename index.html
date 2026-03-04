@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Love everywhere I go</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      background-color: #000;
+      transition: background-color 0.8s ease;
+      color: #1A1A1A;
+      overflow-x: hidden;
+      zoom: 1.25;
+    }
+
+    /* Nav: solo aparece cuando hay scroll o siempre visible */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1rem 1.5rem;
+      background: transparent;
+    }
+    .nav a {
+      color: #F9F5F2;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      padding: 0.5rem 1rem;
+      border: 2px solid #F9F5F2;
+    }
+    body.dark .nav a { color: #F9F5F2; border-color: #F9F5F2; }
+    .nav .brand { border: none; font-size: 1rem; }
+
+    /* Una sola sección: experiencia de scroll */
+    .scroll-experience {
+      min-height: 200vh;
+    }
+    .stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow: hidden;
+    }
+    .scroll-experience.scrolled .stage {
+      justify-content: flex-start;
+      padding-top: 4.3rem;
+    }
+    .hero-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      z-index: 2;
+      transform-origin: center center;
+      transform: translateY(calc(-4rem - 18px - 0.18rem - 30vh * var(--scroll-progress, 0))) scale(calc(1 - 0.65 * var(--scroll-progress, 0)));
+    }
+    .scroll-experience.scrolled .hero-header {
+      transform-origin: top center;
+      transform: translateY(0) scale(1);
+    }
+    .hero-title-wrap {
+      text-align: center;
+    }
+    .hero-title {
+      font-size: clamp(1.5rem, 6vw, 5rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1.1;
+      text-align: center;
+      max-width: min(900px, 92vw);
+      margin: 0;
+    }
+    .hero-title-line {
+      display: none;
+      font-size: clamp(1.5rem, 6vw, 5rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1.1;
+      white-space: nowrap;
+      margin: 0;
+    }
+    @media (max-width: 600px) {
+      .hero-title,
+      .hero-title-line {
+        font-size: clamp(1.1rem, 5.5vw, 2.5rem);
+      }
+      .scroll-experience.scrolled .hero-title-line {
+        white-space: normal;
+      }
+      .scroll-experience.scrolled .hero-header {
+        flex-wrap: wrap;
+      }
+    }
+    @media (max-width: 380px) {
+      .hero-title,
+      .hero-title-line {
+        font-size: clamp(0.95rem, 5vw, 1.75rem);
+      }
+    }
+    .scroll-experience.scrolled .hero-title {
+      display: none;
+    }
+    .scroll-experience.scrolled .hero-title-line {
+      display: inline;
+    }
+    .scroll-experience.scrolled .hero-header {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      gap: 1rem;
+      align-items: center;
+    }
+    .scroll-experience.scrolled .hero-title-wrap {
+      text-align: left;
+    }
+    .scroll-experience.scrolled .hero-header .mascot {
+      flex-shrink: 0;
+    }
+    .center-block {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) translateY(20px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.5s ease 0.2s, visibility 0.5s ease 0.2s, transform 0.5s ease 0.2s;
+      z-index: 1;
+    }
+    .scroll-experience.scrolled .center-block {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translate(-50%, -50%) translateY(0);
+    }
+    .clock {
+      font-size: clamp(2.5rem, 10vw, 5rem);
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #FFEFBB;
+      font-variant-numeric: tabular-nums;
+    }
+    .center-phrase {
+      font-size: clamp(1rem, 3vw, 1.35rem);
+      font-weight: 600;
+      color: rgba(255, 239, 187, 0.95);
+      letter-spacing: 0.02em;
+      margin: 0;
+    }
+    body.scrolled { background-color: #000; }
+    body.scrolled.dark .nav a { color: #F9F5F2; border-color: #F9F5F2; }
+    .hero-title.yellow { color: #F4BF4C; }
+    .hero-title.cream,
+    .hero-title-line.cream { color: #AF7BEF; }
+    .hero-title.gold { color: #E6B742; }
+    .hero-title.light { color: #F9F5F2; }
+    .hero-title.pink { color: #f0d4e0; }
+
+    .drop {
+      display: inline-block;
+      opacity: 0;
+      animation: dropBounce 1.2s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards;
+    }
+    .d1 { animation-delay: 0.2s; }
+    .d2 { animation-delay: 0.45s; }
+    .d3 { animation-delay: 0.7s; }
+    /* Sin transition para que, tras el drop, las letras queden fijas */
+    .hero-title .drop { transition: none; }
+    @keyframes dropBounce {
+      0% { transform: translateY(-200px); opacity: 0; }
+      60% { transform: translateY(20px); opacity: 1; }
+      75% { transform: translateY(-10px); opacity: 1; }
+      90% { transform: translateY(5px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes heart-float {
+      0%, 100% { transform: scale(1) translateY(0); }
+      50% { transform: scale(1) translateY(-5px); }
+    }
+    @keyframes heart-pop {
+      0% { transform: scale(0); opacity: 0; }
+      70% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    /* Profundidad sincronizada con pasos (1.2s por paso): 25% = pie izq → inclina izq; 50% = pie der → inclina der */
+    @keyframes heart-tilt {
+      0% { transform: perspective(180px) rotateY(12deg); }
+      25% { transform: perspective(180px) rotateY(-12deg); }
+      50% { transform: perspective(180px) rotateY(12deg); }
+      75% { transform: perspective(180px) rotateY(-12deg); }
+      100% { transform: perspective(180px) rotateY(12deg); }
+    }
+    .mascot {
+      width: 100px;
+      height: 100px;
+      margin: 1rem auto;
+      display: block;
+      opacity: 0;
+      animation: heart-pop 0.6s ease-out 1.2s forwards, heart-float 2.5s ease-in-out 1.8s infinite;
+      transform-style: preserve-3d;
+    }
+    .hero-header .mascot {
+      margin: 0;
+    }
+    .mascot-inner {
+      display: block;
+      animation: heart-tilt 2.4s ease-in-out infinite;
+      transform-style: preserve-3d;
+    }
+    .mascot svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .mascot .eye-outer {
+      fill: #fff;
+      stroke: #1A1A1A;
+      stroke-width: 1.5;
+      transition: transform 0.08s ease-out;
+    }
+    .mascot .pupil {
+      fill: #1A1A1A;
+      transition: transform 0.08s ease-out;
+    }
+    .mascot .eye-shine {
+      fill: white;
+      opacity: 0.95;
+    }
+    @keyframes leg-walk-left {
+      0%, 100% { transform: translate(38px, 85px) scale(0.82) rotate(0deg); }
+      50% { transform: translate(38px, 85px) scale(1) rotate(14deg); }
+    }
+    @keyframes leg-walk-right {
+      0%, 100% { transform: translate(62px, 85px) scale(0.82) rotate(0deg); }
+      50% { transform: translate(62px, 85px) scale(1) rotate(-14deg); }
+    }
+    .mascot .leg-left {
+      transform: translate(38px, 85px) scale(0.82) rotate(0deg);
+      animation: leg-walk-left 1.2s ease-in-out infinite;
+    }
+    .mascot .leg-right {
+      transform: translate(62px, 85px) scale(0.82) rotate(0deg);
+      animation: leg-walk-right 1.2s ease-in-out infinite;
+      animation-delay: 0.6s;
+    }
+
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="#" class="brand">Love</a>
+  </nav>
+
+  <div class="scroll-experience" id="scroll-experience">
+    <div class="stage">
+      <header class="hero-header">
+        <div class="hero-title-wrap">
+          <h1 class="hero-title cream">
+            <span class="drop d1">LOVE</span><br>
+            <span class="drop d2">EVERYWHERE</span><br>
+            <span class="drop d3">I GO</span>
+          </h1>
+          <span class="hero-title-line cream" aria-hidden="true">Love everywhere I go</span>
+        </div>
+        <div class="mascot" id="mascot-heart">
+          <div class="mascot-inner">
+            <svg viewBox="0 0 100 105" fill="none" xmlns="http://www.w3.org/2000/svg" id="mascot-svg">
+              <path d="M50 85 C20 55 0 35 0 20 C0 5 15 0 30 0 C40 0 50 10 50 10 C50 10 60 0 70 0 C85 0 100 5 100 20 C100 35 80 55 50 85 Z" fill="#fff" stroke="#1A1A1A" stroke-width="2.5"/>
+              <g class="eye" transform="translate(35, 30)">
+                <circle class="eye-outer" r="10" fill="#fff" />
+                <circle class="pupil" id="pupil-left" r="4" transform="translate(0, 0)" />
+                <circle class="eye-shine" r="1.8" cx="-2" cy="-2" />
+              </g>
+              <g class="eye" transform="translate(65, 30)">
+                <circle class="eye-outer" r="10" fill="#fff" />
+                <circle class="pupil" id="pupil-right" r="4" transform="translate(0, 0)" />
+                <circle class="eye-shine" r="1.8" cx="-2" cy="-2" />
+              </g>
+              <line class="mascot-stick" x1="22" y1="50" x2="8" y2="55" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="round"/>
+              <line class="mascot-stick" x1="78" y1="50" x2="92" y2="55" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="round"/>
+              <g class="leg leg-left">
+                <line class="mascot-stick" x1="0" y1="0" x2="-5" y2="7" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="round"/>
+                <path class="mascot-foot" d="M -5 7 A 5 5 0 0 1 -5 15" fill="none" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="round"/>
+              </g>
+              <g class="leg leg-right">
+                <line class="mascot-stick" x1="0" y1="0" x2="5" y2="7" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="round"/>
+                <path class="mascot-foot" d="M 5 7 A 5 5 0 0 0 5 15" fill="none" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="round"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </header>
+      <div class="center-block">
+        <div class="clock" id="clock" aria-live="polite">00:00:00</div>
+        <p class="center-phrase">4th Anniversary</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const SCROLL_RANGE = 400;
+      const SCROLL_THRESHOLD = 80;
+      const experience = document.getElementById('scroll-experience');
+
+      function updateScrolled() {
+        const scrollY = window.scrollY;
+        const progress = Math.min(1, scrollY / SCROLL_RANGE);
+        if (experience) {
+          experience.style.setProperty('--scroll-progress', progress);
+          experience.classList.toggle('scrolled', scrollY > SCROLL_THRESHOLD);
+        }
+        document.body.classList.toggle('scrolled', scrollY > SCROLL_THRESHOLD);
+        document.body.classList.toggle('dark', scrollY > SCROLL_THRESHOLD);
+      }
+      window.addEventListener('scroll', updateScrolled, { passive: true });
+      updateScrolled();
+
+      var TARGET_DATE = new Date(2026, 8, 22, 0, 0, 0, 0);
+      function formatCountdown() {
+        var now = new Date();
+        var diff = TARGET_DATE.getTime() - now.getTime();
+        if (diff <= 0) return '00:00:00';
+        var h = Math.floor(diff / (1000 * 60 * 60));
+        var rest = diff % (1000 * 60 * 60);
+        var m = Math.floor(rest / (1000 * 60));
+        rest = rest % (1000 * 60);
+        var s = Math.floor(rest / 1000);
+        var pad = function (n) { return String(n).padStart(2, '0'); };
+        return pad(h) + ':' + pad(m) + ':' + pad(s);
+      }
+      const clockEl = document.getElementById('clock');
+      if (clockEl) {
+        function tick() {
+          clockEl.textContent = formatCountdown();
+        }
+        tick();
+        setInterval(tick, 1000);
+      }
+
+      var svg = document.getElementById('mascot-svg');
+      var pupilLeft = document.getElementById('pupil-left');
+      var pupilRight = document.getElementById('pupil-right');
+      var maxMove = 3.2;
+      function movePupils(e) {
+        if (!svg || !pupilLeft || !pupilRight) return;
+        var rect = svg.getBoundingClientRect();
+        var svgX = ((e.clientX - rect.left) / rect.width) * 100;
+        var svgY = ((e.clientY - rect.top) / rect.height) * 105;
+        var eyeL = { x: 35, y: 30 };
+        var eyeR = { x: 65, y: 30 };
+        function clampPupil(eyeX, eyeY) {
+          var dx = svgX - eyeX, dy = svgY - eyeY;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist > maxMove && dist > 0) {
+            dx = (dx / dist) * maxMove;
+            dy = (dy / dist) * maxMove;
+          }
+          return [dx, dy];
+        }
+        var rL = clampPupil(eyeL.x, eyeL.y);
+        var rR = clampPupil(eyeR.x, eyeR.y);
+        pupilLeft.setAttribute('transform', 'translate(' + rL[0] + ', ' + rL[1] + ')');
+        pupilRight.setAttribute('transform', 'translate(' + rR[0] + ', ' + rR[1] + ')');
+      }
+      document.addEventListener('mousemove', movePupils);
+    })();
+  </script>
+</body>
+</html>
