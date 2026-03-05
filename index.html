@@ -64,6 +64,9 @@
     .scroll-experience.scrolled .stage {
       justify-content: flex-start;
       padding-top: 4.3rem;
+      height: auto;
+      min-height: 100vh;
+      overflow: visible;
     }
     .hero-header {
       display: flex;
@@ -105,17 +108,34 @@
       .hero-title-line {
         font-size: clamp(1.1rem, 5.5vw, 2.5rem);
       }
+      .scroll-experience.scrolled .hero-header {
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0 0.75rem;
+      }
+      .scroll-experience.scrolled .hero-title-wrap {
+        text-align: center;
+        max-width: 100%;
+        width: 100%;
+      }
       .scroll-experience.scrolled .hero-title-line {
         white-space: normal;
-      }
-      .scroll-experience.scrolled .hero-header {
-        flex-wrap: wrap;
+        max-width: 100%;
+        text-align: center;
+        display: block;
+        word-break: break-word;
       }
     }
     @media (max-width: 380px) {
       .hero-title,
       .hero-title-line {
-        font-size: clamp(0.95rem, 5vw, 1.75rem);
+        font-size: clamp(0.9rem, 4.8vw, 1.5rem);
+      }
+      .scroll-experience.scrolled .hero-header {
+        padding: 0 0.5rem;
+        gap: 0.5rem;
       }
     }
     .scroll-experience.scrolled .hero-title {
@@ -124,14 +144,16 @@
     .scroll-experience.scrolled .hero-title-line {
       display: inline;
     }
-    .scroll-experience.scrolled .hero-header {
-      flex-direction: row;
-      flex-wrap: nowrap;
-      gap: 1rem;
-      align-items: center;
-    }
-    .scroll-experience.scrolled .hero-title-wrap {
-      text-align: left;
+    @media (min-width: 601px) {
+      .scroll-experience.scrolled .hero-header {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 1rem;
+        align-items: center;
+      }
+      .scroll-experience.scrolled .hero-title-wrap {
+        text-align: left;
+      }
     }
     .scroll-experience.scrolled .hero-header .mascot {
       flex-shrink: 0;
@@ -140,22 +162,26 @@
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(-50%, -50%) translateY(20px);
+      transform: translate(-50%, -50%);
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 1rem;
+      width: 100%;
+      max-width: 92vw;
+      padding: 2rem 1rem 3rem;
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.5s ease 0.2s, visibility 0.5s ease 0.2s, transform 0.5s ease 0.2s;
-      z-index: 1;
+      transition: opacity 0.5s ease 0.2s, visibility 0.5s ease 0.2s;
     }
     .scroll-experience.scrolled .center-block {
+      position: static;
+      transform: none;
+      margin: 2rem auto 0;
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
-      transform: translate(-50%, -50%) translateY(0);
     }
     .clock {
       font-size: clamp(2.5rem, 10vw, 5rem);
@@ -170,6 +196,86 @@
       color: rgba(255, 239, 187, 0.95);
       letter-spacing: 0.02em;
       margin: 0;
+    }
+    .center-info {
+      max-width: 480px;
+      margin-top: 1.75rem;
+      text-align: center;
+    }
+    .center-divider {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      margin: 0 0 1.25rem 0;
+    }
+    .center-statement {
+      font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+      font-weight: 700;
+      line-height: 1.35;
+      color: #F9F5F2;
+      margin: 0 0 0.6rem 0;
+    }
+    .center-desc {
+      font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.5;
+      margin: 0 0 1.25rem 0;
+    }
+    .center-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+    .btn-primary,
+    .btn-secondary {
+      display: inline-block;
+      padding: 0.6rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: #F9F5F2;
+      color: #1A1A1A;
+      border: 2px solid #F9F5F2;
+    }
+    .btn-secondary {
+      background: transparent;
+      color: #F9F5F2;
+      border: 2px solid rgba(249, 245, 242, 0.6);
+    }
+    .btn-primary:hover,
+    .btn-secondary:hover { opacity: 0.9; }
+    .center-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+    }
+    .center-link {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+    }
+    .center-link:hover { color: rgba(255, 255, 255, 0.95); }
+    .center-links-sep {
+      color: rgba(255, 255, 255, 0.35);
+      user-select: none;
+    }
+    @media (max-width: 600px) {
+      .center-info { margin-top: 1.25rem; }
+      .center-statement { font-size: clamp(1rem, 4vw, 1.25rem); }
+      .center-desc { font-size: 0.9rem; }
+      .center-buttons { gap: 0.5rem; margin-bottom: 1rem; }
+      .btn-primary, .btn-secondary { padding: 0.5rem 1rem; font-size: 0.85rem; }
+      .center-links { font-size: 0.7rem; flex-direction: column; gap: 0.35rem; }
+      .center-links-sep { display: none; }
     }
     body.scrolled { background-color: #000; }
     body.scrolled.dark .nav a { color: #F9F5F2; border-color: #F9F5F2; }
@@ -271,6 +377,151 @@
       animation-delay: 0.6s;
     }
 
+    /* Carousel (visible cuando scrolled) */
+    .carousel-container {
+      display: none;
+      width: 100%;
+      max-width: 92vw;
+      margin: 1.5rem auto 0;
+      padding: 0 0.5rem;
+      position: relative;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .scroll-experience.scrolled .carousel-container {
+      display: flex;
+    }
+    .carousel-wrap {
+      flex: 1;
+      min-width: 0;
+      padding: 0 0.5rem;
+    }
+    .carousel-arrow {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border: 2px solid rgba(249, 245, 242, 0.5);
+      background: rgba(0, 0, 0, 0.4);
+      color: #F9F5F2;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+    }
+    .carousel-arrow:hover {
+      background: rgba(249, 245, 242, 0.15);
+      border-color: rgba(249, 245, 242, 0.8);
+    }
+    .carousel-arrow:active { transform: scale(0.95); }
+    .carousel-arrow svg {
+      width: 22px;
+      height: 22px;
+    }
+    .carousel-arrow-left { order: -1; }
+    .carousel-arrow-right { order: 1; }
+    .carousel-track {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding: 0.5rem calc(50% - 140px);
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .carousel-track::-webkit-scrollbar {
+      display: none;
+    }
+    .carousel-card {
+      flex: 0 0 auto;
+      width: 280px;
+      min-height: 160px;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      background: var(--card-bg, rgba(249,245,242,0.2));
+      border: 2px solid rgba(255,255,255,0.25);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .carousel-card.active {
+      transform: scale(1.06);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    .carousel-kicker {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(26,26,26,0.8);
+      margin-bottom: 0.35rem;
+    }
+    .carousel-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #1A1A1A;
+      margin-bottom: 0.5rem;
+    }
+    .carousel-body {
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: rgba(26,26,26,0.85);
+    }
+    @media (max-width: 600px) {
+      .carousel-container {
+        max-width: 100%;
+        margin-top: 1rem;
+        padding: 0 0.5rem;
+        gap: 0.35rem;
+      }
+      .carousel-wrap { padding: 0; min-width: 0; }
+      .carousel-track {
+        gap: 0.75rem;
+        padding: 0.5rem calc(50% - min(160px, 44vw));
+      }
+      .carousel-card {
+        width: min(320px, 88vw);
+        min-width: 260px;
+        min-height: 140px;
+        padding: 1rem 1rem;
+        border-radius: 12px;
+      }
+      .carousel-card.active {
+        transform: scale(1.02);
+      }
+      .carousel-arrow {
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+      }
+      .carousel-arrow svg { width: 18px; height: 18px; }
+      .carousel-kicker { font-size: 0.65rem; }
+      .carousel-title { font-size: 0.95rem; margin-bottom: 0.35rem; }
+      .carousel-body { font-size: 0.8rem; line-height: 1.35; }
+    }
+    @media (max-width: 380px) {
+      .carousel-container { padding: 0 0.35rem; gap: 0.25rem; }
+      .carousel-track {
+        padding: 0.4rem calc(50% - min(140px, 46vw));
+        gap: 0.6rem;
+      }
+      .carousel-card {
+        width: min(300px, 92vw);
+        min-width: 240px;
+        min-height: 120px;
+        padding: 0.85rem 0.9rem;
+        border-radius: 10px;
+      }
+      .carousel-card.active { transform: scale(1.02); }
+      .carousel-arrow { width: 32px; height: 32px; }
+      .carousel-arrow svg { width: 16px; height: 16px; }
+      .carousel-kicker { font-size: 0.6rem; }
+      .carousel-title { font-size: 0.9rem; margin-bottom: 0.25rem; }
+      .carousel-body { font-size: 0.75rem; line-height: 1.3; }
+    }
+
   </style>
 </head>
 <body>
@@ -317,9 +568,34 @@
           </div>
         </div>
       </header>
+      <div class="carousel-container" id="carousel-container">
+        <button type="button" class="carousel-arrow carousel-arrow-left" id="carousel-prev" aria-label="Anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </button>
+        <div class="carousel-wrap" id="carousel-wrap">
+          <div id="carousel-track" class="carousel-track" aria-label="Carrusel"></div>
+        </div>
+        <button type="button" class="carousel-arrow carousel-arrow-right" id="carousel-next" aria-label="Siguiente">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
       <div class="center-block">
         <div class="clock" id="clock" aria-live="polite">00:00:00</div>
         <p class="center-phrase">4th Anniversary</p>
+        <div class="center-info">
+          <hr class="center-divider" aria-hidden="true">
+          <p class="center-statement">Cada segundo cuenta. Celebra con quien suma.</p>
+          <p class="center-desc">El 22 de septiembre de 2026 cerramos un ciclo y abrimos el siguiente. Nos vemos ahí.</p>
+          <div class="center-buttons">
+            <a href="#" class="btn-primary">Guardar fecha</a>
+            <a href="#" class="btn-secondary">Compartir</a>
+          </div>
+          <div class="center-links">
+            <a href="#" class="center-link">→ Guarda la fecha en tu calendario</a>
+            <span class="center-links-sep">|</span>
+            <a href="#" class="center-link">→ Prepara algo especial para ese día</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -363,6 +639,103 @@
         }
         tick();
         setInterval(tick, 1000);
+      }
+
+      // ===== Carousel =====
+      const carouselData = [
+        { kicker: 'Explora', title: 'Microrrituales', body: 'Pequeños gestos repetidos con intención. El cerebro ama la consistencia.', bg: 'linear-gradient(135deg, rgba(175,123,239,0.55), rgba(244,191,76,0.18))' },
+        { kicker: 'Construye', title: 'Cosas que importan', body: 'Una lista corta, una decisión clara. Menos ruido, más señal.', bg: 'linear-gradient(135deg, rgba(244,191,76,0.55), rgba(240,212,224,0.18))' },
+        { kicker: 'Respira', title: 'Paz + precisión', body: 'Calma no es lentitud: es control fino del sistema nervioso.', bg: 'linear-gradient(135deg, rgba(240,212,224,0.55), rgba(175,123,239,0.18))' },
+        { kicker: 'Aprende', title: 'Curiosidad aplicada', body: 'Haz una pregunta brutalmente concreta por día. Suma rápido.', bg: 'linear-gradient(135deg, rgba(175,123,239,0.45), rgba(249,245,242,0.14))' },
+        { kicker: 'Juega', title: 'Ideas raras', body: 'La creatividad es un laboratorio: prueba, mide, conserva lo útil.', bg: 'linear-gradient(135deg, rgba(230,183,66,0.48), rgba(175,123,239,0.22))' },
+        { kicker: 'Cuida', title: 'Energía primero', body: 'Sueño + sol + agua. El resto es software corriendo en hardware.', bg: 'linear-gradient(135deg, rgba(249,245,242,0.18), rgba(244,191,76,0.28))' }
+      ];
+
+      const track = document.getElementById('carousel-track');
+      if (track) {
+        track.innerHTML = carouselData.map(function (c, i) {
+          return '<article class="carousel-card" data-idx="' + i + '" style="--card-bg:' + c.bg + '">' +
+            '<div class="carousel-kicker">' + c.kicker + '</div>' +
+            '<div class="carousel-title">' + c.title + '</div>' +
+            '<div class="carousel-body">' + c.body + '</div>' +
+            '</article>';
+        }).join('');
+
+        var cards = Array.prototype.slice.call(track.querySelectorAll('.carousel-card'));
+        var raf = null;
+        var settleT = null;
+        var programmaticScroll = false;
+        function updateActive() {
+          if (!cards.length) return;
+          var trackRect = track.getBoundingClientRect();
+          var centerX = trackRect.left + trackRect.width / 2;
+          var bestIdx = 0;
+          var bestDist = Infinity;
+          cards.forEach(function (card, idx) {
+            var r = card.getBoundingClientRect();
+            var cx = r.left + r.width / 2;
+            var dist = Math.abs(cx - centerX);
+            if (dist < bestDist) { bestDist = dist; bestIdx = idx; }
+          });
+          cards.forEach(function (card, idx) {
+            card.classList.toggle('active', idx === bestIdx);
+          });
+        }
+        function onScroll() {
+          if (raf) cancelAnimationFrame(raf);
+          raf = requestAnimationFrame(updateActive);
+          if (programmaticScroll) return;
+          if (settleT) clearTimeout(settleT);
+          settleT = setTimeout(function () {
+            var active = track.querySelector('.carousel-card.active');
+            if (active) active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }, 120);
+        }
+        track.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', updateActive);
+        track.addEventListener('click', function (e) {
+          var card = e.target && e.target.closest ? e.target.closest('.carousel-card') : null;
+          if (!card) return;
+          card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        });
+
+        function getCenteredIndex() {
+          if (!cards.length) return 0;
+          var trackRect = track.getBoundingClientRect();
+          var centerX = trackRect.left + trackRect.width / 2;
+          var bestIdx = 0;
+          var bestDist = Infinity;
+          cards.forEach(function (card, idx) {
+            var r = card.getBoundingClientRect();
+            var cx = r.left + r.width / 2;
+            var dist = Math.abs(cx - centerX);
+            if (dist < bestDist) { bestDist = dist; bestIdx = idx; }
+          });
+          return bestIdx;
+        }
+        function scrollToIndex(idx) {
+          var card = cards[idx];
+          if (!card) return;
+          programmaticScroll = true;
+          card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          setTimeout(function () { programmaticScroll = false; }, 500);
+        }
+        var btnPrev = document.getElementById('carousel-prev');
+        var btnNext = document.getElementById('carousel-next');
+        if (btnPrev) {
+          btnPrev.addEventListener('click', function () {
+            var idx = getCenteredIndex();
+            scrollToIndex(Math.max(0, idx - 1));
+          });
+        }
+        if (btnNext) {
+          btnNext.addEventListener('click', function () {
+            var idx = getCenteredIndex();
+            scrollToIndex(Math.min(cards.length - 1, idx + 1));
+          });
+        }
+
+        updateActive();
       }
 
       var svg = document.getElementById('mascot-svg');
