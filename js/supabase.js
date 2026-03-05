@@ -60,7 +60,7 @@
 
         try {
           const { data, error } = await supabaseClient
-            .from("Prueba2")
+            .from("prueba2")
             .insert([
               {
                 nombre: nombre || null,
