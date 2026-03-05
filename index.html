@@ -678,10 +678,10 @@
           <p class="center-statement">Deja tu mensaje para el día especial</p>
           <p class="center-desc">Escribe algo bonito que se leerá el 22 de septiembre de 2026. Un deseo, un recuerdo o algo que quieras celebrar.</p>
           <form class="message-form" id="message-form" aria-label="Formulario de mensaje">
-            <label class="message-label" for="msg-name">Tu nombre (opcional)</label>
-            <input type="text" id="msg-name" class="message-input" name="name" placeholder="Cómo te llamas" maxlength="60" autocomplete="name">
-            <label class="message-label" for="msg-text">Tu mensaje</label>
-            <textarea id="msg-text" class="message-textarea" name="message" placeholder="Ej: No puedo esperar a celebrar contigo ese día..." rows="4" maxlength="400" required></textarea>
+            <label class="message-label" for="nombre">Tu nombre (opcional)</label>
+            <input id="nombre" type="text" class="message-input" name="name" placeholder="Cómo te llamas" maxlength="60" autocomplete="name">
+            <label class="message-label" for="mensaje">Tu mensaje</label>
+            <textarea id="mensaje" class="message-textarea" name="message" placeholder="Ej: No puedo esperar a celebrar contigo ese día..." rows="4" maxlength="400" required></textarea>
             <button type="submit" class="btn-primary btn-send">Enviar mensaje</button>
           </form>
         </div>
@@ -689,23 +689,54 @@
     </div>
   </div>
 
-  <!-- Supabase: crea la tabla en SQL Editor con:
-  create table if not exists mensajes (
-    id uuid default gen_random_uuid() primary key,
-    name text,
-    message text not null,
-    created_at timestamptz default now()
-  );
-  alter table mensajes enable row level security;
-  create policy "Permitir insertar mensajes" on mensajes for insert with check (true);
-  create policy "Permitir leer mensajes" on mensajes for select using (true);
-  -->
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    /* =========================
+       CONEXIÓN A SUPABASE
+       ========================= */
+    const SUPABASE_URL = "https://ghuwapdmjqeiejtqimwm.supabase.co";
+    const supabase = window.supabase.createClient(
+      SUPABASE_URL,
+      "sb_publishable_8Rw3xLQfzD3a3Sj3pNBG_Q_bVPqK1Tm"
+    );
+
+    /* =========================
+       FORMULARIO
+       ========================= */
+    const form = document.querySelector("form");
+    if (form) {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const nombre = document.querySelector("#nombre").value;
+        const mensaje = document.querySelector("#mensaje").value;
+
+        if (!mensaje) {
+          alert("Escribe un mensaje");
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from("Prueba2")
+          .insert([
+            {
+              nombre: nombre || null,
+              mensaje: mensaje
+            }
+          ]);
+
+        if (error) {
+          console.error(error);
+          alert("Error al enviar el mensaje");
+        } else {
+          alert("Mensaje enviado correctamente");
+          form.reset();
+        }
+      });
+    }
+  </script>
+  <script>
     (function () {
-      // Reemplaza con tu proyecto Supabase (Settings > API en el dashboard)
-      var SUPABASE_URL = 'https://TU_PROYECTO.supabase.co';
-      var SUPABASE_ANON_KEY = 'TU_ANON_KEY';
       const SCROLL_RANGE = 400;
       const SCROLL_THRESHOLD = 80;
       const experience = document.getElementById('scroll-experience');
@@ -764,18 +795,6 @@
         }
         tick();
         setInterval(tick, 1000);
-      }
-
-      // ===== Mensajes para el día especial =====
-      var form = document.getElementById('message-form');
-      if (form) {
-        form.addEventListener('submit', function (e) {
-          e.preventDefault();
-          var textEl = document.getElementById('msg-text');
-          if (textEl) textEl.value = '';
-          var nameEl = document.getElementById('msg-name');
-          if (nameEl) nameEl.value = '';
-        });
       }
 
       // ===== Carousel =====
