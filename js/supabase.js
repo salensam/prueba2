@@ -7,9 +7,9 @@
   const SUPABASE_URL = "https://ghuwapdmjqeiejtqimwm.supabase.co";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdodXdhcGRtanFlaWVqdHFpbXdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzgwODAsImV4cCI6MjA4ODI1NDA4MH0.D3mpNkICGTjHIWf18X9mhDpPB3jx9cAo5xz51hVaO3Y";
 
-  let supabase = null;
+  let supabaseClient = null;
   if (typeof window !== "undefined" && window.supabase) {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   }
 
   /* =========================
@@ -43,7 +43,7 @@
       });
     }
 
-    if (form && supabase) {
+    if (form && supabaseClient) {
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
         const nombreEl = document.getElementById("nombre");
@@ -59,7 +59,7 @@
         showSuccessPopup();
 
         try {
-          const { data, error } = await supabase
+          const { data, error } = await supabaseClient
             .from("Prueba2")
             .insert([
               {
